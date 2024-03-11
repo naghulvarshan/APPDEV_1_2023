@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Music App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <style>
+      .head_nav {
+        justify-content: space-around;
+      }
+
+      #nv {
+        padding-left: 5%;
+      }
+
+      #r1 {
+        height: 100%;
+      }
+    </style>
+    <script>
+      function displayOverlay() {
+        document.getElementById("overlay").style.display = "flex";
+      }
+
+      function hideOverlay() {
+        document.getElementById("overlay").style.display = "none";
+      }
+    </script>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light" id="nv">
+        <a class="navbar-brand" href="{{url_for('admin')}}">Music</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div
+          class="collapse navbar-collapse justify-content-between"
+          id="navbarSupportedContent"
+        >
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="{{url_for('allsongs')}}"> All songs </a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link"><b>All albums</b></a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="container mx-auto text-center">
+      <div class="row border my-2 py-2">
+        <div class="col-1"><b>Album id</b></div>
+        <div class="col-2"><b>Album name</b></div>
+
+        <div class="col-2">
+          <b>Upload by (click to flag)</b>
+        </div>
+      </div>
+      {% for a in albums %}
+      <div class="row border my-2 py-2">
+        <div class="col-1">{{a.album_id}}</div>
+        <div class="col-2">{{a.album_name}}</div>
+
+        <div class="col-2">
+          {% for u in users%} {% if u.user_id==a.uploaded_by%}
+          <a href="{{url_for('flag',id=u.user_id)}}">{{u.user_name}}</a>
+          {% endif %} {% endfor %}
+        </div>
+        <div class="col-1">
+          <a href="{{url_for('remove_album',id=a.album_id)}}">Remove album</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </body>
+</html>
